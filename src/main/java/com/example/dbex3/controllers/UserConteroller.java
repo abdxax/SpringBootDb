@@ -21,20 +21,14 @@ public class UserConteroller {
         return userService.getAll();
     }
     @PostMapping("/addUser")
-    public ResponseEntity addUser(@RequestBody @Valid User user, Errors errors){
-        if(errors.hasErrors()){
-            String msg=errors.getFieldError().getDefaultMessage();
-            return ResponseEntity.status(400).body(msg);
-        }
+    public ResponseEntity addUser(@RequestBody @Valid User user){
+
         userService.addUser(user);
         return ResponseEntity.status(200).body("Added done");
     }
     @PutMapping("/updateUser/{id}")
-    public ResponseEntity UpdateItem(@PathVariable Integer id,@RequestBody @Valid User user,Errors errors){
-        if(errors.hasErrors()){
-            String msg=errors.getFieldError().getDefaultMessage();
-            return ResponseEntity.status(400).body(msg);
-        }
+    public ResponseEntity UpdateItem(@PathVariable Integer id,@RequestBody @Valid User user){
+
         Boolean res=userService.upateUser(id,user);
         if(!res){
             return ResponseEntity.status(400).body("Id IS ERROR");
@@ -51,5 +45,35 @@ public class UserConteroller {
         }
         return ResponseEntity.status(200).body("delete done");
     }
+    @GetMapping("/getuserByUserNameAndPass/{username}/{password}")
+    public ResponseEntity Login(@PathVariable  String username,@PathVariable String password){
+        User user=userService.findByUsernameAndPassword(username,password);
+        return ResponseEntity.status(200).body(user);
+
+    }
+    @GetMapping("/getUserByEMAIL/{email}")
+    public ResponseEntity getUserUserPass(@PathVariable  String email){
+        User user=userService.findByEmail(email);
+        return ResponseEntity.status(200).body(user);
+
+    }
+
+    @GetMapping("/getUsersByRole/{role}")
+    public ResponseEntity getUsersRole(@PathVariable  String role){
+        List<User> user=userService.findAllByRole(role);
+        return ResponseEntity.status(200).body(user);
+
+    }
+
+    @GetMapping("/getUsersAge/{age}")
+    public ResponseEntity getUsersAge(@PathVariable  int age){
+        List<User> user=userService.findByAgeGreaterThanEqual(age);
+        return ResponseEntity.status(200).body(user);
+
+    }
+
+
+
+
 
 }

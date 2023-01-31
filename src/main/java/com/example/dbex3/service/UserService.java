@@ -1,5 +1,7 @@
 package com.example.dbex3.service;
 
+import com.example.dbex3.ExceptionHandling.ApiException;
+import com.example.dbex3.ExceptionHandling.ApiRespons;
 import com.example.dbex3.models.User;
 import com.example.dbex3.repostry.RepstoryUser;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +43,30 @@ public class UserService {
 
         repstoryUser.delete(oldUser);
         return true;
+    }
+
+    public User findByUsernameAndPassword(String userName,String password){
+        User user=repstoryUser.findByUsernameAndPassword(userName,password);
+        if(user==null){
+          throw  new ApiException("The username or password is not correct");
+        }
+        return user;
+    }
+
+    public User findByEmail(String email){
+        User user=repstoryUser.findByEmail(email);
+        if(user==null){
+            throw  new ApiException("The Email not correct");
+        }
+        return user;
+    }
+
+    public List<User> findAllByRole(String role){
+        List<User> users=repstoryUser.findAllByRole(role);
+        return users;
+    }
+    public List<User> findByAgeGreaterThanEqual(int age){
+        List<User> users=repstoryUser.findages(age);
+        return users;
     }
 }
