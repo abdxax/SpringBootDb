@@ -1,6 +1,7 @@
 package com.example.dbex3.controllers;
 
 import com.example.dbex3.models.User;
+import com.example.dbex3.models.UserModel;
 import com.example.dbex3.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -45,9 +46,9 @@ public class UserConteroller {
         }
         return ResponseEntity.status(200).body("delete done");
     }
-    @GetMapping("/getuserByUserNameAndPass/{username}/{password}")
-    public ResponseEntity Login(@PathVariable  String username,@PathVariable String password){
-        User user=userService.findByUsernameAndPassword(username,password);
+    @PostMapping("/getuserByUserNameAndPass")
+    public ResponseEntity Login(@RequestBody @Valid UserModel userLogin){
+        User user=userService.findByUsernameAndPassword(userLogin.getUsername(),userLogin.getPassword());
         return ResponseEntity.status(200).body(user);
 
     }
